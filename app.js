@@ -1,5 +1,3 @@
-const e = require("cors");
-
 document.addEventListener('DOMContentLoaded', () => {
     const squares = document.querySelectorAll('.grid div');
     const scoreDisplay = document.querySelector('span');
@@ -10,22 +8,66 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSnake = [2,1,0]
     let direction = 1
     let score = 0
-    let spped = 0.9
+    let speed = 0.9
     let intervalTime = 0
     let interval = 0
 
-    function control (ev){
+    //start and restart de game
+    function startGame () {
+        currentSnake.forEach(index => squares[index].classList.remove('snake'))
+        squares[appleIndex].classList.remove('apple')
+        clearInterval(interval)
+        score = 0
+        randomApple()
+        direction = 1
+        scoreDisplay.innerText = score
+        intervalTime = 1000
+        currentSnake = [2,1,0]
+        currentIndex = 0
+        currentSnake.forEach(index => squares[index].classList.add('snake'))
+        interval = setInterval(moveOutcomes, intervalTime)
+    }
+
+    function moveOutcomes () {
+        if (
+            (currentSnake[0] + width >= (width * width) && direction === width) ||
+            (currentSnake[0] % width === width - 1 && direction === 1) ||
+            (currentSnake[0] % width === 0 && direction === -1) ||
+            (currentSnake[0] - width < 0 && direction === -width) ||
+            squares[currentSnake[0] + direction].classList.contains('snake')
+        ){
+            return clearInterval(interval)
+        }
+        const tail = currentSnake.pop()
+        squares[tail].classList.remove('snake')
+        currentSnake.unshift(currentSnake[0] + direction)
+        if (squares[currentSnake[0]].classList.contains('apple')) {
+            squares[currentSnake[0]].classList.remove('apple')
+            squares[tail].classList.add('snake')
+            currentSnake.push(tail)
+            randomApple()
+            score++
+            scoreDisplay.textContent = score
+            clearInterval(interval)
+            intervalTime = intervalTime * speed
+            interval = setInterval (moveOutcomes, intervalTime)
+        }
+        squares[currentSnake[0]].classList.add('snake')
+    }
+
+
+    function control (e){
         squares[currentIndex].classList.remove('snake')
-        if (ev.keyCode === 39) {
-            direction = 1 //right arroz on path
-        } else if (ev.keyCode === 38){ 
-            direction = -width // up arrow on path
-        } else if (ev.keyCode === 37){
+        if (e.KeyCode === 39) {
+            direction = 1 //right arrow
+        } else if (e.KeyCode === 38){ 
+            direction = -width // up arrow
+        } else if (e.KeyCode === 37){
             direction = -1 // left arrow
-        } else if (ev.keyCode === 40) {
+        } else if (e.KeyCode === 40) {
             direction = +width //down arrow
         }
     }
-    document.addEventListener('keyUp', control)
-
+    document.addEventListener('keyup', control())
+    startBtn.addEventListener('click', startGame())
 })
