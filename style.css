@@ -32,8 +32,10 @@ body{
     height: 60px;
 }
 .snake{
-    background-color: blue;
+    background-color: green;
 }
 .apple{
-    background-color: purple;
+    background-image: url(./manzana.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }

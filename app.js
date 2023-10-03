@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[appleIndex].classList.remove('apple')
         clearInterval(interval)
         score = 0
-        //randomApple()
+        randomApple()
         direction = 1
         scoreDisplay.innerText = score
         intervalTime = 1000
@@ -54,20 +54,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         squares[currentSnake[0]].classList.add('snake')
     }
-
+    // generate a new apple once apple is eaten
+    function randomApple () {
+        do{
+            appleIndex = Math.floor(Math.random()*squares.length)
+        } while (squares[appleIndex].classList.contains('snake'))
+        squares[appleIndex].classList.add('apple')
+    }
     // control snake
     function control (e){
         squares[currentIndex].classList.remove('snake')
-        if (e.KeyCode === 39) {
+        if (e.keyCode === 39) {
             direction = 1 //right arrow
-        } else if (e.KeyCode === 38){ 
+        } else if (e.keyCode === 38){ 
             direction = -width // up arrow
-        } else if (e.KeyCode === 37){
+        } else if (e.keyCode === 37){
             direction = -1 // left arrow
-        } else if (e.KeyCode === 40) {
+        } else if (e.keyCode === 40) {
             direction = +width //down arrow
         }
     }
-    document.addEventListener('keyup', control())
+    document.addEventListener('keyup', control)
     startBtn.addEventListener('click', startGame())
 })
