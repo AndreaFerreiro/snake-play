@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[appleIndex].classList.remove('apple')
         clearInterval(interval)
         score = 0
-        randomApple()
+        //randomApple()
         direction = 1
         scoreDisplay.innerText = score
         intervalTime = 1000
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[currentSnake[0]].classList.add('snake')
     }
 
-
+    // control snake
     function control (e){
         squares[currentIndex].classList.remove('snake')
         if (e.KeyCode === 39) {
